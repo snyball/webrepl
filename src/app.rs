@@ -5,7 +5,10 @@ use yew::{prelude::*, html::Scope};
 use spaik::repl::REPL;
 use web_sys::HtmlElement;
 
-const STARTUP_CODE: &'static str = r#"(range (i (0 100)) (println "{i}"))"#;
+const STARTUP_CODE: [&'static str; 1] = [
+    r#"(range (i (0 7)) (println "hello! {i}"))"#,
+    // r#"(println "Hello, World!")"#,
+];
 
 #[derive(Debug)]
 enum HistElem {
@@ -75,26 +78,22 @@ impl Component for App {
     type Properties = ();
 
     fn create(ctx: &Context<Self>) -> Self {
-        App {
+        let app = App {
             hist: Default::default(),
             link: ctx.link().clone(),
             prompt_ref: Default::default(),
             repl: REPL::new(Some(Box::new(OutWriter::new(ctx.link().clone())))),
             hist_idx: None,
+        };
+        for line in STARTUP_CODE {
+            ctx.link().send_message(Msg::Eval(line.to_string()));
         }
+        app
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::Eval(code) => {
-                self.hist.push(HistElem::Prompt(code.clone()));
-                match self.repl.eval(code) {
-                    Ok(Some(res)) => self.hist.push(HistElem::Result(res)),
-                    Err(e) => self.hist.push(HistElem::Error(e)),
-                    Ok(None) => ()
-                }
-                self.hist_bottom();
-            },
+            Msg::Eval(code) => self.eval(code),
             Msg::Output(out) => {
                 self.hist.push(HistElem::Output(out));
                 self.scroll_bottom()
@@ -137,7 +136,6 @@ impl Component for App {
                 </ul>
                 <div id="prompt-container" class="prompt-container">
                     <div id="prompt" class="prompt" ref={&self.prompt_ref} contenteditable="true" {onkeydown} autofocus=true>
-                        {STARTUP_CODE}
                         <br/>
                     </div>
                 </div>
@@ -162,6 +160,17 @@ impl App {
                 <div class="output"><pre>{out}</pre></div>
             }
         }
+    }
+
+    fn eval(&mut self, code: String) {
+        let res = self.repl.eval(&code);
+        self.hist.push(HistElem::Prompt(code));
+        match res {
+            Ok(Some(res)) => self.hist.push(HistElem::Result(res)),
+            Err(e) => self.hist.push(HistElem::Error(e)),
+            Ok(None) => ()
+        }
+        self.hist_bottom();
     }
 
     fn scroll_bottom(&self) {
