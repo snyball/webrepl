@@ -647,7 +647,7 @@ dependencies = [
 [[package]]
 name = "spaik"
 version = "0.2.2"
-source = "git+https://github.com/snyball/spaik.git?rev=88a73a073eff3a76486d57f7837a6b98ed81e603#88a73a073eff3a76486d57f7837a6b98ed81e603"
+source = "git+https://github.com/snyball/spaik.git?rev=1a0cf7b7b73bfcbf08022bbf90b61db96366d718#1a0cf7b7b73bfcbf08022bbf90b61db96366d718"
 dependencies = [
  "convert_case",
  "fnv",

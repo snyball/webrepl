@@ -19,7 +19,7 @@ web-sys = { version = "0.3.61", features = ["Range", "Selection"] }
 git = "https://github.com/snyball/spaik.git"
 default-features = false
 features = ["no-threading"]
-rev = "88a73a073eff3a76486d57f7837a6b98ed81e603"
+rev = "1a0cf7b7b73bfcbf08022bbf90b61db96366d718"
 
 [profile.release]
 lto = "fat"
