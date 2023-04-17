@@ -84,7 +84,7 @@ impl Component for App {
         }
     }
 
-    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Msg::Eval(code) => {
                 self.hist.push(HistElem::Prompt(code.clone()));
@@ -94,9 +94,11 @@ impl Component for App {
                     Ok(None) => ()
                 }
                 self.hist_bottom();
-                ctx.link().send_message(Msg::ScrollBottom);
             },
-            Msg::Output(out) => self.hist.push(HistElem::Output(out)),
+            Msg::Output(out) => {
+                self.hist.push(HistElem::Output(out));
+                self.scroll_bottom()
+            },
             Msg::HistNext => self.hist_next(),
             Msg::HistPrev => self.hist_prev(),
             Msg::ScrollBottom => self.scroll_bottom(),
