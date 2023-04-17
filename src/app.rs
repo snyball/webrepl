@@ -1,6 +1,6 @@
 use std::io;
 
-use gloo::utils::document;
+use gloo::utils::{document, window};
 use yew::{prelude::*, html::Scope};
 use spaik::repl::REPL;
 use web_sys::HtmlElement;
@@ -159,6 +159,7 @@ impl App {
     fn set_prompt_text(&self, code: &str) {
         let elem: HtmlElement = self.prompt_ref.cast().unwrap();
         elem.set_inner_text(code);
+        self.move_caret_end();
     }
 
     fn hist_prev(&mut self) {
@@ -189,5 +190,15 @@ impl App {
 
     fn hist_bottom(&mut self) {
         self.hist_idx = None
+    }
+
+    fn move_caret_end(&self) {
+        let range = document().create_range().unwrap();
+        let Some(node) = self.prompt_ref.get() else { return };
+        range.select_node_contents(&node).unwrap();
+        range.collapse();
+        let selection = window().get_selection().unwrap().unwrap();
+        selection.remove_all_ranges().unwrap();
+        selection.add_range(&range).unwrap();
     }
 }
