@@ -1,15 +1,14 @@
 [package]
-name = "trunk-template"
+name = "webrepl"
 version = "0.1.0"
 edition = "2021"
-description = "Template for starting a Yew project using Trunk"
+description = "Web REPL"
 readme = "README.md"
-repository = "https://github.com/yewstack/yew-trunk-minimal-template"
+repository = "https://github.com/snyball/webrepl"
 license = "MIT OR Apache-2.0"
-keywords = ["yew", "trunk"]
+keywords = ["web", "repl"]
 categories = ["gui", "wasm", "web-programming"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 gloo = "0.8.0"
 gloo-console = "0.2.3"
@@ -20,6 +19,7 @@ web-sys = "0.3.61"
 git = "https://github.com/snyball/spaik.git"
 default-features = false
 features = ["no-threading"]
+rev = "88a73a073eff3a76486d57f7837a6b98ed81e603"
 
 [profile.release]
 lto = "fat"

@@ -1,8 +1,7 @@
-use std::{io, fmt};
+use std::io;
 
 use gloo::utils::document;
 use yew::{prelude::*, html::Scope};
-use gloo_console::log;
 use spaik::repl::REPL;
 use web_sys::HtmlElement;
 
@@ -82,7 +81,7 @@ impl Component for App {
         }
     }
 
-    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Msg::Eval(code) => {
                 self.hist.push(HistElem::Prompt(code.clone()));
@@ -102,7 +101,7 @@ impl Component for App {
         true
     }
 
-    fn view(&self, ctx: &Context<Self>) -> Html {
+    fn view(&self, _ctx: &Context<Self>) -> Html {
         let link = self.link.clone();
         let onkeydown = move |ev: KeyboardEvent| if ev.key() == "Enter" {
             let elem = document().get_element_by_id("prompt").unwrap();
@@ -119,20 +118,13 @@ impl Component for App {
         };
 
         let prompt_ref = self.prompt_ref.clone();
-        let onclick = move |ev| {
-            let elem: HtmlElement = prompt_ref.cast().unwrap();
-            elem.focus().unwrap();
-            log!("click.");
-        };
-
-        let prompt_ref = self.prompt_ref.clone();
-        let onmouseenter = move |ev| {
+        let onclick = move |_| {
             let elem: HtmlElement = prompt_ref.cast().unwrap();
             elem.focus().unwrap();
         };
 
         html! {
-            <div id="repl-console" class="repl-console" {onclick} {onmouseenter}>
+            <div id="repl-console" class="repl-console" {onclick}>
                 <ul class="history">
                     {for self.hist.iter().map(|h| self.view_hist(h))}
                 </ul>
