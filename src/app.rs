@@ -6,7 +6,7 @@ use spaik::repl::REPL;
 use web_sys::HtmlElement;
 
 const STARTUP_CODE: [&'static str; 1] = [
-    r#"(range (i (0 7)) (println "hello! {i}"))"#,
+    r#"(range (n (0 7)) (let ((th (nth (vec "th" "st" "nd" "rd") n "th"))) (println "Hello world, for the {n}{th} time!")))"#,
     // r#"(println "Hello, World!")"#,
 ];
 
@@ -174,8 +174,6 @@ impl App {
     }
 
     fn scroll_bottom(&self) {
-        // let elem: HtmlElement = self.prompt_ref.cast().unwrap();
-        // elem.scroll_to();
         let console = document().get_element_by_id("repl-console").unwrap();
         console.set_scroll_top(console.scroll_height());
     }
