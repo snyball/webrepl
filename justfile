@@ -8,4 +8,4 @@ build:
     wasm-opt -Oz -o dist/webrepl-*.wasm dist/webrepl-*.wasm
     minify-js -m module dist/webrepl-*.js -o dist/webrepl-*.js
     mkdir -p releases
-    #tar cvfJ releases/webrepl-$(git describe)
+    tar cvfJ "releases/webrepl-$(git describe).tar.xz" dist/
