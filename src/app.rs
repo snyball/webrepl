@@ -115,7 +115,10 @@ impl Component for App {
             },
             Msg::HistNext => self.hist_next(),
             Msg::HistPrev => self.hist_prev(),
-            Msg::ScrollBottom => scroll_bottom(),
+            Msg::ScrollBottom => {
+                scroll_bottom();
+                return false
+            },
         }
         true
     }
@@ -140,8 +143,13 @@ impl Component for App {
 
         let prompt_ref = self.prompt_ref.clone();
         let onclick = move |_| {
-            let elem: HtmlElement = prompt_ref.cast().unwrap();
-            elem.focus().unwrap();
+            let is_range = window().get_selection().unwrap().map(|s| {
+                s.type_() == "Range"
+            }).unwrap_or_default();
+            if !is_range {
+                let elem: HtmlElement = prompt_ref.cast().unwrap();
+                elem.focus().unwrap();
+            }
         };
 
         Timeout::new(10, scroll_timeout).forget();
