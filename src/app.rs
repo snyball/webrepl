@@ -126,6 +126,9 @@ impl Component for App {
     fn view(&self, _ctx: &Context<Self>) -> Html {
         let link = self.link.clone();
         let onkeydown = move |ev: KeyboardEvent| {
+            if ["Control", "Shift"].contains(&ev.key().as_str()) {
+                return;
+            }
             link.send_message(Msg::ScrollBottom);
             match ev.key().as_str() {
                 "Enter" => {
