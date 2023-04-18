@@ -1,9 +1,9 @@
 use std::io;
 
-use gloo::utils::{document, window};
+use gloo::{utils::{document, window}, timers::callback::Timeout};
 use yew::{prelude::*, html::Scope};
 use spaik::repl::REPL;
-use web_sys::HtmlElement;
+use web_sys::{HtmlElement, MutationObserver};
 
 const STARTUP_CODE: [&'static str; 1] = [
     r#"(range (n (0 7)) (let ((th (nth (vec "th" "st" "nd" "rd") n "th"))) (println "Hello world, for the {n}{th} time!")))"#,
@@ -72,6 +72,22 @@ impl io::Write for OutWriter {
     }
 }
 
+fn scroll_bottom() {
+    let console = document().get_element_by_id("repl-console").unwrap();
+    console.set_scroll_top(console.scroll_height());
+}
+
+fn scroll_timeout() {
+    let console = document().get_element_by_id("repl-console").unwrap();
+    let scroll_height = console.scroll_height();
+    let scroll_top = console.scroll_top();
+    if scroll_height != scroll_top {
+        console.set_scroll_top(scroll_height);
+    } else {
+        Timeout::new(16, scroll_timeout).forget();
+    }
+}
+
 impl Component for App {
     type Message = Msg;
 
@@ -96,11 +112,10 @@ impl Component for App {
             Msg::Eval(code) => self.eval(code),
             Msg::Output(out) => {
                 self.hist.push(HistElem::Output(out));
-                self.scroll_bottom()
             },
             Msg::HistNext => self.hist_next(),
             Msg::HistPrev => self.hist_prev(),
-            Msg::ScrollBottom => self.scroll_bottom(),
+            Msg::ScrollBottom => scroll_bottom(),
         }
         true
     }
@@ -128,6 +143,8 @@ impl Component for App {
             let elem: HtmlElement = prompt_ref.cast().unwrap();
             elem.focus().unwrap();
         };
+
+        Timeout::new(10, scroll_timeout).forget();
 
         html! {
             <div id="repl-console" class="repl-console" {onclick}>
@@ -171,11 +188,6 @@ impl App {
             Ok(None) => ()
         }
         self.hist_bottom();
-    }
-
-    fn scroll_bottom(&self) {
-        let console = document().get_element_by_id("repl-console").unwrap();
-        console.set_scroll_top(console.scroll_height());
     }
 
     fn set_prompt_text(&self, code: &str) {

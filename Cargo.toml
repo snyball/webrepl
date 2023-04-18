@@ -13,7 +13,7 @@ categories = ["gui", "wasm", "web-programming"]
 gloo = "0.8.0"
 gloo-console = "0.2.3"
 yew = { version="0.20", features=["csr"] }
-web-sys = { version = "0.3.61", features = ["Range", "Selection"] }
+web-sys = { version = "0.3.61", features = ["Range", "Selection", "MutationObserver"] }
 
 [dependencies.spaik]
 git = "https://github.com/snyball/spaik.git"
