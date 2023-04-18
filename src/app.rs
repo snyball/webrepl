@@ -3,7 +3,7 @@ use std::io;
 use gloo::{utils::{document, window}, timers::callback::Timeout};
 use yew::{prelude::*, html::Scope};
 use spaik::repl::REPL;
-use web_sys::{HtmlElement, MutationObserver};
+use web_sys::HtmlElement;
 
 const STARTUP_CODE: [&'static str; 1] = [
     r#"(range (n (0 7)) (let ((th (nth (vec "th" "st" "nd" "rd") n "th"))) (println "Hello world, for the {n}{th} time!")))"#,
@@ -155,7 +155,7 @@ impl Component for App {
             }
         };
 
-        Timeout::new(10, scroll_timeout).forget();
+        Timeout::new(16, scroll_timeout).forget();
 
         html! {
             <div id="repl-console" class="repl-console" {onclick}>
