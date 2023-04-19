@@ -1,0 +1,54 @@
+.repl-container {
+  background: black;
+  height: 100%;
+  width: 100%;
+}
+
+@mixin pad {
+  padding-left: 0.35em;
+  padding-right: 0.35em;
+}
+
+.repl-console {
+  height: 100%;
+  width: 100%;
+  color: whitesmoke;
+  min-height: 0px;
+  overflow-y: auto;
+}
+
+.prompt {
+  width: 100%;
+  font-family: monospace;
+  font-size: 1em;
+  background-color: black;
+  border: none;
+}
+
+.prompt-container {
+  @include pad;
+}
+
+ul.history {
+  overflow: scoll;
+  @include pad;
+}
+
+.prompt::before {
+  font-family: monospace;
+  content: "λ> "
+}
+
+.result::before {
+  font-family: monospace;
+  color: cyan;
+  content: "=> "
+}
+
+.result {
+  font-family: monospace;
+}
+
+[contenteditable]:focus {
+    outline: 0px solid transparent;
+}
