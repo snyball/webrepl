@@ -1,16 +1,43 @@
 /*! index.scss | Møller Systems | CC0 Public Domain */
 @import "normalize";
 
+*, *::before, *::after{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: normal;
+}
+
+@media screen and (max-width: 600px) {
+  .bigscreen-text {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  footer {
+    font-size: 0.9em !important;
+  }
+  footer img.logo {
+    height: 1.15em !important;
+  }
+}
+
 html,
 body {
   height: 100%;
-  margin: 0;
 }
 
 body {
-  // display: flex;
-  // justify-content: center;
+  display: flex;
+  flex-flow: column;
   font-size: 1.5rem;
+  height: 100%;
+}
+
+main {
+  flex-grow: 1;
+  max-height: 92%;
 }
 
 .repl-container {
@@ -27,8 +54,36 @@ body {
 .repl-console {
   height: 100%;
   width: 100%;
-  overflow: scroll;
   color: whitesmoke;
+  min-height: 0px;
+  overflow-y: auto;
+}
+
+footer {
+  padding-top: 0.25em;
+  color: whitesmoke;
+  font-family: monospace;
+  flex: none;
+  background-color: #4f1af0ff;
+  min-height: 8%;
+  font-size: 1.35em;
+  overflow: hidden;
+}
+
+footer a {
+  color: #ff0;
+}
+
+footer .moesys {
+  padding-left: 0.5em;
+  vertical-align: middle;
+}
+
+footer img.logo {
+  translate: 0 10%;
+  height: 1.50em;
+  float: right;
+  padding-right: 0.5em;
 }
 
 .prompt {
@@ -45,7 +100,6 @@ body {
 
 ul.history {
   overflow: scoll;
-  margin: 0;
   @include pad;
 }
 
@@ -62,16 +116,6 @@ ul.history {
 
 .result {
   font-family: monospace;
-}
-
-.output pre {
-  margin: 0;
-  padding: 0;
-}
-
-.error pre {
-  margin: 0;
-  padding: 0;
 }
 
 [contenteditable]:focus {
