@@ -19,7 +19,7 @@ web-sys = { version = "0.3.61", features = ["Range", "Selection", "MutationObser
 git = "https://github.com/snyball/spaik.git"
 default-features = false
 features = ["no-threading"]
-rev = "7ec317d0fa8177891b825beed2531167cec90529"
+rev = "d4d4a7ee2dd0c2655a8748cbbe3176193cc78620"
 
 [profile.release]
 lto = "fat"
